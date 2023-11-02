@@ -29,14 +29,19 @@ export class User {
   })
   avatarUrl: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column('text', {
+    array: true,
+    default: ['user'],
+  })
+  roles: string[];
 
   @Column('bool', {
     default: true,
   })
   isActive: boolean;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
