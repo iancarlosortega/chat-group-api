@@ -47,11 +47,21 @@ export class AuthService {
     const { password, email } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { id: true, email: true, password: true },
+      select: [
+        'id',
+        'fullName',
+        'email',
+        'password',
+        'avatarUrl',
+        'isActive',
+        'roles',
+        'createdAt',
+        'updatedAt',
+      ],
     });
 
     if (!user || !bcrypt.compareSync(password, user.password)) {
-      throw new UnauthorizedException('Not valid credentials');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     delete user.password;
