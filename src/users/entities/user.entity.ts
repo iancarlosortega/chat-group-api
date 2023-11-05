@@ -39,6 +39,7 @@ export class User {
     default: true,
   })
   isActive: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
