@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Chat } from './entities/chat.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
@@ -36,7 +36,19 @@ export class ChatsService {
 
   async findOne(id: string) {
     try {
-      const chat = await this.chatRepository.findOneByOrFail({ id });
+      const chat = await this.chatRepository.findOne({
+        relations: {
+          messages: true,
+        },
+        where: {
+          id,
+        },
+      });
+
+      if (!chat) {
+        throw new NotFoundException("Chat doesn't exists!");
+      }
+
       return chat;
     } catch (error) {
       this.handleDBExceptions(error);
@@ -64,10 +76,6 @@ export class ChatsService {
 
     if (error.code === '22P02') {
       throw new BadRequestException('ID is not valid');
-    }
-
-    if (error.constructor === EntityNotFoundError) {
-      throw new NotFoundException("Chat with that ID doesn't exists");
     }
 
     console.log(error);

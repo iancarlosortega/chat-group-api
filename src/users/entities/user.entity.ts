@@ -1,7 +1,9 @@
+import { Message } from 'src/messages/entities/message.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -45,4 +47,11 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  // Relations
+
+  @OneToMany(() => Message, (message) => message.user, {
+    cascade: true,
+  })
+  messages: Message[];
 }

@@ -6,6 +6,7 @@ import { EnvConfiguration } from 'config/app.config';
 import { JoiValidationSchema } from 'config/joi.validation';
 import { UsersModule } from './users/users.module';
 import { ChatsModule } from './chats/chats.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ChatsModule } from './chats/chats.module';
     AuthModule,
     UsersModule,
     ChatsModule,
+    MessagesModule,
   ],
   controllers: [],
   providers: [],
