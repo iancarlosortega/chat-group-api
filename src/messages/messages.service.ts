@@ -60,6 +60,21 @@ export class MessagesService {
     }
   }
 
+  async findByChatRoom(chatId: string) {
+    await this.chatsService.findOne(chatId);
+    const messages = await this.messageRepository.find({
+      relations: {
+        user: true,
+      },
+      where: {
+        chat: {
+          id: chatId,
+        },
+      },
+    });
+    return messages;
+  }
+
   async update(id: string, updateMessageDto: UpdateMessageDto, user: User) {
     const message = await this.findOne(id);
     const { chatId, ...messageData } = updateMessageDto;

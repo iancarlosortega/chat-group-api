@@ -36,14 +36,7 @@ export class ChatsService {
 
   async findOne(id: string) {
     try {
-      const chat = await this.chatRepository.findOne({
-        relations: {
-          messages: true,
-        },
-        where: {
-          id,
-        },
-      });
+      const chat = await this.chatRepository.findOneBy({ id });
 
       if (!chat) {
         throw new NotFoundException("Chat doesn't exists!");

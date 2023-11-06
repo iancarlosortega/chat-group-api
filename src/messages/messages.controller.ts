@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Get,
+} from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
@@ -14,6 +22,11 @@ export class MessagesController {
   @Auth()
   create(@Body() createMessageDto: CreateMessageDto, @GetUser() user: User) {
     return this.messagesService.create(createMessageDto, user);
+  }
+
+  @Get(':id')
+  findByChatRoom(@Param('id') chatId: string) {
+    return this.messagesService.findByChatRoom(chatId);
   }
 
   @Patch(':id')
