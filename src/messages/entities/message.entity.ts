@@ -17,10 +17,12 @@ export class Message {
   @Column('text')
   content: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'timestamp with time zone',
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn({ type: 'timestamp with time zone', select: false })
   updatedAt: Date;
 
   // Relations
