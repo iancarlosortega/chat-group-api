@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Chat } from './entities/chat.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class ChatsService {
@@ -30,8 +31,20 @@ export class ChatsService {
     }
   }
 
-  findAll() {
-    return this.chatRepository.find();
+  async findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
+    const [result, totalItems] = await this.chatRepository.findAndCount({
+      take: limit,
+      skip: offset,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return {
+      totalItems,
+      result,
+    };
   }
 
   async findOne(id: string) {

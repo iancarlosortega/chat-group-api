@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Get,
+  Query,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Auth } from 'src/auth/decorators/auth.decorator';
@@ -13,6 +14,7 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('messages')
 export class MessagesController {
@@ -25,8 +27,11 @@ export class MessagesController {
   }
 
   @Get(':id')
-  findByChatRoom(@Param('id') chatId: string) {
-    return this.messagesService.findByChatRoom(chatId);
+  findByChatRoom(
+    @Param('id') chatId: string,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.messagesService.findByChatRoom(chatId, paginationDto);
   }
 
   @Patch(':id')

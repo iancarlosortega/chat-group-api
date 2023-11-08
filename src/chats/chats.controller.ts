@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('chats')
 export class ChatsController {
@@ -21,8 +23,8 @@ export class ChatsController {
   }
 
   @Get()
-  findAll() {
-    return this.chatsService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.chatsService.findAll(paginationDto);
   }
 
   @Get(':id')

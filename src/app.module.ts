@@ -7,6 +7,7 @@ import { JoiValidationSchema } from 'config/joi.validation';
 import { UsersModule } from './users/users.module';
 import { ChatsModule } from './chats/chats.module';
 import { MessagesModule } from './messages/messages.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MessagesModule } from './messages/messages.module';
     UsersModule,
     ChatsModule,
     MessagesModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],

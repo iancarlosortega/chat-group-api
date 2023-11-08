@@ -12,6 +12,7 @@ import { Message } from './entities/message.entity';
 import { User } from 'src/users/entities/user.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class MessagesService {
@@ -60,9 +61,12 @@ export class MessagesService {
     }
   }
 
-  async findByChatRoom(chatId: string) {
+  async findByChatRoom(chatId: string, paginationDto: PaginationDto) {
+    const { limit = 15, offset = 0 } = paginationDto;
     await this.chatsService.findOne(chatId);
-    const messages = await this.messageRepository.find({
+    const [result, totalItems] = await this.messageRepository.findAndCount({
+      take: limit,
+      skip: offset,
       relations: {
         user: true,
       },
@@ -71,8 +75,14 @@ export class MessagesService {
           id: chatId,
         },
       },
+      order: {
+        createdAt: 'DESC',
+      },
     });
-    return messages;
+    return {
+      result,
+      totalItems,
+    };
   }
 
   async update(id: string, updateMessageDto: UpdateMessageDto, user: User) {
