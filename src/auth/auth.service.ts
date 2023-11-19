@@ -14,6 +14,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly usersService: UsersService,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
@@ -81,6 +83,15 @@ export class AuthService {
 
   private getJwtToken(payload: JwtPayload) {
     return this.jwtService.sign(payload);
+  }
+
+  async getUserFromAuthenticationToken(token: string) {
+    const payload: JwtPayload = this.jwtService.verify(token);
+    const userId = payload.id;
+
+    if (userId) {
+      return this.usersService.findOne(userId);
+    }
   }
 
   private handleDBExceptions(error: any): never {

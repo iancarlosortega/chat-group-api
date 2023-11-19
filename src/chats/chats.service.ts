@@ -5,9 +5,12 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { Socket } from 'socket.io';
+import { WsException } from '@nestjs/websockets';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Chat } from './entities/chat.entity';
+import { AuthService } from 'src/auth/auth.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
@@ -19,6 +22,7 @@ export class ChatsService {
   constructor(
     @InjectRepository(Chat)
     private readonly chatRepository: Repository<Chat>,
+    private readonly authService: AuthService,
   ) {}
 
   async create(createChatDto: CreateChatDto) {
@@ -72,6 +76,18 @@ export class ChatsService {
   async remove(id: string) {
     const chat = await this.findOne(id);
     return this.chatRepository.remove(chat);
+  }
+
+  async getUserFromSocket(socket: Socket) {
+    const authorizationHeaders = socket.handshake.headers.authorization;
+    const token = authorizationHeaders.split(' ')[1];
+
+    const user = this.authService.getUserFromAuthenticationToken(token);
+
+    if (!user) {
+      throw new WsException('Invalid credentials.');
+    }
+    return user;
   }
 
   private handleDBExceptions(error: any): never {
