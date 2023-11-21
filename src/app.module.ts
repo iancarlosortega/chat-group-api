@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { ChatsModule } from './chats/chats.module';
 import { MessagesModule } from './messages/messages.module';
 import { CommonModule } from './common/common.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { CommonModule } from './common/common.module';
     ChatsModule,
     MessagesModule,
     CommonModule,
+    CloudinaryModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],

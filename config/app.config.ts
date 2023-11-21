@@ -7,4 +7,7 @@ export const EnvConfiguration = () => ({
   db_username: process.env.DB_USERNAME || 'postgres',
   jwt_secret: process.env.JWT_SECRET,
   port: process.env.PORT || '5000',
+  cloudinary_name: process.env.CLOUDINARY_NAME,
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+  cloudinary_api_secret_key: process.env.CLOUDINARY_API_SECRET_KEY,
 });

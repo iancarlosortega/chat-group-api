@@ -8,4 +8,7 @@ export const JoiValidationSchema = Joi.object({
   DB_USERNAME: Joi.string().default('postgres'),
   JWT_SECRET: Joi.string().required(),
   PORT: Joi.number().default(4000),
+  CLOUDINARY_NAME: Joi.string().required(),
+  CLOUDINARY_API_KEY: Joi.string().required(),
+  CLOUDINARY_API_SECRET_KEY: Joi.string().required(),
 });
