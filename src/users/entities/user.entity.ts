@@ -1,4 +1,3 @@
-import { Message } from 'src/messages/entities/message.entity';
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Message } from 'src/messages/entities/message.entity';
 
 @Entity()
 export class User {
@@ -29,7 +29,22 @@ export class User {
   @Column('text', {
     nullable: true,
   })
-  avatarUrl: string;
+  avatarUrl?: string;
+
+  @Column('int', {
+    nullable: true,
+  })
+  age?: number;
+
+  @Column('text', {
+    nullable: true,
+  })
+  gender?: string;
+
+  @Column('text', {
+    nullable: true,
+  })
+  birthDate?: string;
 
   @Column('text', {
     array: true,
