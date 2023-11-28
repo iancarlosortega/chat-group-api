@@ -12,6 +12,7 @@ import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { SearchChatDto } from './dto/search-chat.dto';
 
 @Controller('chats')
 export class ChatsController {
@@ -25,6 +26,11 @@ export class ChatsController {
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.chatsService.findAll(paginationDto);
+  }
+
+  @Get('search')
+  findBySearchTerm(@Query() searchChatDto: SearchChatDto) {
+    return this.chatsService.findBySearchTerm(searchChatDto);
   }
 
   @Get(':id')

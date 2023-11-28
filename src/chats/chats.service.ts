@@ -14,6 +14,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { SearchChatDto } from './dto/search-chat.dto';
 
 @Injectable()
 export class ChatsService {
@@ -60,6 +61,33 @@ export class ChatsService {
       }
 
       return chat;
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
+  }
+
+  async findBySearchTerm(searchChatDto: SearchChatDto) {
+    const { term, limit = 10, offset = 0 } = searchChatDto;
+
+    try {
+      const [result, totalItems] = await this.chatRepository
+        .createQueryBuilder()
+        .where('LOWER(name) LIKE LOWER(:name)', {
+          name: `%${term}%`,
+        })
+        .take(limit)
+        .skip(offset)
+        .orderBy('Chat.createdAt', 'DESC')
+        .getManyAndCount();
+
+      if (!result) {
+        throw new NotFoundException('Invalid term!');
+      }
+
+      return {
+        totalItems,
+        result,
+      };
     } catch (error) {
       this.handleDBExceptions(error);
     }
